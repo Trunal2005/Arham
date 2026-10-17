@@ -35,7 +35,15 @@
       "title": "Engineering evidence"
     }
   ],
-  "total_seconds": 103.11515779977324,
-  "status": "decoded successfully; presentation should be personally reviewed before submission",
-  "captions": "Approximate phrase timing from synthesized segment duration; at most two lines per cue"
+  "total_seconds": 118.6,
+  "status": "Full decode and browser playback verification recorded in submission-video-verification.json",
+  "captions": "Approximate phrase timing from synthesized segment duration; at most two lines per cue",
+  "original_presentation_seconds": 103.12,
+  "supplement_seconds": 15.48,
+  "supplement": {
+    "description": "Existing walkthrough preserved; current-dashboard and actual captured HTTP 202 response appended. Evidence panel is explicitly labelled, not product UI.",
+    "response": "submission-http-response.json",
+    "screenshot": "submission-http-response.png",
+    "narration": "Local Windows System.Speech synthetic voice"
+  }
 }

@@ -1,0 +1,144 @@
+{
+  "status": "passed",
+  "checks": [
+    "fresh empty database and immediate shell",
+    "empty dashboard does not poll",
+    "5/32/900 presets and modal initial focus",
+    "native input validation, Escape, and restored focus",
+    "double submission prevented and two tabs update automatically",
+    "search and stable pagination",
+    "cached rows, filter/page preservation, and independently verified INR amount",
+    "browser reload during running ingestion retains saved trades",
+    "real 32-second pull, fast 202, elapsed clock, and measured two-tab DOM update",
+    "duplicate dataset adds zero and displays duplicate count",
+    "duplicate event ignored without extra refresh",
+    "disconnect, missed-event replay, and mobile/tablet overflow",
+    "worker crash visible and next explicit pull replaces worker",
+    "backend restart recovers interrupted job and reconnects both tabs",
+    "browser refresh preserves committed data",
+    "no idle polling, external resources, browser exceptions, or failed HTTP responses"
+  ],
+  "browser": "155.0.8059.80",
+  "httpRequests": 52,
+  "checkedAt": "2026-10-17T12:07:34.454Z",
+  "timeoutEvidence": {
+    "status": "passed",
+    "jobId": "5cdd87ba-3ee5-4636-b8e8-098c26d759fc",
+    "acceptanceSeconds": 0.34398139999999694,
+    "configuredDelaySeconds": 32,
+    "workerWallSeconds": 32.499,
+    "tabs": [
+      {
+        "jobId": "5cdd87ba-3ee5-4636-b8e8-098c26d759fc",
+        "receivedAt": 55915.299999999814,
+        "eventId": 9,
+        "renderedAt": 56387.200000000186,
+        "receiveToRenderMs": 471.90000000037253
+      },
+      {
+        "jobId": "5cdd87ba-3ee5-4636-b8e8-098c26d759fc",
+        "receivedAt": 28018.299999999814,
+        "eventId": 9,
+        "renderedAt": 28608.5,
+        "receiveToRenderMs": 590.2000000001863
+      }
+    ],
+    "browserClock": "performance.now per document; only same-document durations are subtracted",
+    "serverTrace": [
+      {
+        "stage": "http.accepted",
+        "job_id": "5cdd87ba-3ee5-4636-b8e8-098c26d759fc",
+        "monotonic": 8263.1113773,
+        "utc": "2026-10-17T12:06:26.035329+00:00",
+        "pid": 25788,
+        "delay_seconds": 32
+      },
+      {
+        "stage": "worker.started",
+        "job_id": "5cdd87ba-3ee5-4636-b8e8-098c26d759fc",
+        "monotonic": 8263.1490469,
+        "utc": "2026-10-17T12:06:26.073002+00:00",
+        "pid": 14748
+      },
+      {
+        "stage": "websocket.notified",
+        "job_id": "5cdd87ba-3ee5-4636-b8e8-098c26d759fc",
+        "monotonic": 8263.2776414,
+        "utc": "2026-10-17T12:06:26.201589+00:00",
+        "pid": 25788,
+        "event_id": 7,
+        "type": "pull.queued",
+        "client_id": "1997309097488"
+      },
+      {
+        "stage": "websocket.notified",
+        "job_id": "5cdd87ba-3ee5-4636-b8e8-098c26d759fc",
+        "monotonic": 8263.293583,
+        "utc": "2026-10-17T12:06:26.217533+00:00",
+        "pid": 25788,
+        "event_id": 7,
+        "type": "pull.queued",
+        "client_id": "1997309725440"
+      },
+      {
+        "stage": "websocket.notified",
+        "job_id": "5cdd87ba-3ee5-4636-b8e8-098c26d759fc",
+        "monotonic": 8263.3618493,
+        "utc": "2026-10-17T12:06:26.285800+00:00",
+        "pid": 25788,
+        "event_id": 8,
+        "type": "pull.started",
+        "client_id": "1997309097488"
+      },
+      {
+        "stage": "websocket.notified",
+        "job_id": "5cdd87ba-3ee5-4636-b8e8-098c26d759fc",
+        "monotonic": 8263.3706168,
+        "utc": "2026-10-17T12:06:26.294583+00:00",
+        "pid": 25788,
+        "event_id": 8,
+        "type": "pull.started",
+        "client_id": "1997309725440"
+      },
+      {
+        "stage": "worker.finished",
+        "job_id": "5cdd87ba-3ee5-4636-b8e8-098c26d759fc",
+        "monotonic": 8295.7215719,
+        "utc": "2026-10-17T12:06:58.645537+00:00",
+        "pid": 14748,
+        "event_id": 9,
+        "inserted_count": 3000
+      },
+      {
+        "stage": "database.committed",
+        "job_id": "5cdd87ba-3ee5-4636-b8e8-098c26d759fc",
+        "monotonic": 8295.9731453,
+        "utc": "2026-10-17T12:06:58.897106+00:00",
+        "pid": 14748,
+        "event_id": 9
+      },
+      {
+        "stage": "websocket.notified",
+        "job_id": "5cdd87ba-3ee5-4636-b8e8-098c26d759fc",
+        "monotonic": 8296.0616348,
+        "utc": "2026-10-17T12:06:58.985627+00:00",
+        "pid": 25788,
+        "event_id": 9,
+        "type": "pull.completed",
+        "client_id": "1997309097488"
+      },
+      {
+        "stage": "websocket.notified",
+        "job_id": "5cdd87ba-3ee5-4636-b8e8-098c26d759fc",
+        "monotonic": 8296.0655851,
+        "utc": "2026-10-17T12:06:58.989536+00:00",
+        "pid": 25788,
+        "event_id": 9,
+        "type": "pull.completed",
+        "client_id": "1997309956976"
+      }
+    ]
+  },
+  "externalRequests": [],
+  "errors": []
+}

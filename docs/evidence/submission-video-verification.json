@@ -1,0 +1,23 @@
+{
+  "source": "docs/evidence/submission-walkthrough.mp4",
+  "duration": 118.6,
+  "width": 1440,
+  "height": 1000,
+  "readyState": 4,
+  "currentTime": 1.482528,
+  "paused": false,
+  "error": null,
+  "audioDecodedBytes": 24601,
+  "videoDecodedBytes": 34538,
+  "seekChecksSeconds": [
+    0,
+    35,
+    84,
+    112
+  ],
+  "status": "passed",
+  "audio": "AAC track decoded during real Chromium playback; full FFmpeg decode also verified non-silent narration",
+  "narration": "Disclosed local synthetic voice",
+  "originalRecording": "Original working application before latest visual redesign; intact 32-second wait",
+  "supplement": "Current dashboard and actual captured HTTP 202 response; labelled evidence panel"
+}

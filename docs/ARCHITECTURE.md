@@ -1,93 +1,48 @@
 # Architecture note
 
-## Data and control flow
+## Problem
+
+An exchange pull may take 15 minutes, while ordinary HTTP requests are limited to 30 seconds. Users must continue reading saved trades and receive new records automatically. The solution separates short requests, background processing, persistent state, and live notification.
 
 ```mermaid
 flowchart LR
-    UI[Browser dashboard] -->|Short GET /getTrades| API[FastAPI · one process]
-    MOCK[GET /getTrades] -->|Same accept/result protocol| API
-    API -->|Commit job · queued event| DB[(SQLite WAL)]
-    API -->|One IPC message · no polling| WORKER[Separate Python worker]
-    WORKER -->|Local mock delay · 0 to 900 seconds| GEN[Seeded BSE provider]
-    GEN -->|Trades| WORKER
-    WORKER -->|Atomic trades + completion event| DB
-    WORKER -->|Commit notification via stdout pipe| API
-    API -->|Signal ordered event dispatcher| PUSH[Durable cursor dispatcher]
-    PUSH -->|WebSocket completion event| UI
-    UI -->|Short GET /api/dashboard| API
-    API -->|Read committed snapshot| DB
+    UI["Browser dashboard"] -->|"Short request /getTrades"| API["FastAPI"]
+    API -->|"202 Accepted and job ID"| UI
+    API -->|"Durable job and queued event"| DB[("SQLite WAL")]
+    API -->|"Job ID through stdin pipe"| W["Background worker process"]
+    W -->|"Local simulated delay"| P["Seeded mock BSE provider"]
+    P -->|"Generated trades"| W
+    W -->|"Atomic trades, completion, event"| DB
+    W -->|"Post-commit stdout notification"| API
+    API -->|"Ordered WebSocket event"| UI
+    UI -->|"One dashboard snapshot request"| API
+    API -->|"Consistent read transaction"| DB
 ```
 
-```mermaid
-sequenceDiagram
-    participant B as Browser
-    participant A as API
-    participant D as SQLite
-    participant W as Worker process
-    B->>A: Subscribe WS /ws?after=cursor
-    A->>B: Durable replay, then connected
-    B->>A: GET /getTrades with pull configuration
-    A->>D: INSERT queued job and event
-    A->>A: Signal ordered dispatcher (do not await subscribers)
-    A->>W: IPC job ID
-    A-->>B: 202 Accepted + Location
-    A-->>B: WS pull.queued (independent of response timing)
-    W->>D: Mark running, append started event
-    W->>A: IPC started event ID
-    A->>B: WS pull.started
-    Note over W: Wait up to 15 minutes locally; no open HTTP request
-    B->>A: Read/search/page cached trades
-    A->>D: SELECT committed trades
-    A-->>B: Existing ledger immediately
-    W->>D: Single transaction: INSERT OR IGNORE trades, complete job, append event
-    W->>A: IPC completion event ID after commit
-    A->>B: WS pull.completed
-    B->>A: Fetch one consistent dashboard snapshot
-    A-->>B: New committed trades
-```
+## Components and flow
 
-## Why this design
+- **FastAPI (`arham/app.py`)** serves the dashboard, validates requests, persists a queued job, and promptly returns `202` plus its ID and `Location`. `/getTrades?job_id=...` exposes the eventual result. `POST /api/pulls` enters the same pipeline.
+- **Background worker (`arham/worker.py`)** runs in a separate process. It blocks on stdin until a job arrives, waits for the configured local delay, and calls the provider. Its lifetime belongs to the server rather than the initiating HTTP client.
+- **Mock BSE provider (`arham/provider.py`)** generates reproducible records from a seed. The independent `/mock-bse/getTrades` demonstration waits and returns records directly without ingestion; the worker does not call it over HTTP.
+- **SQLite (`arham/db.py`)** stores jobs, trades, and durable events. WAL permits committed-data reads during ingestion. One transaction inserts the batch, completes the job, and appends its event. `/api/dashboard` reads trades, aggregates, and jobs in a consistent snapshot. Prices use integer paise.
+- **WebSocket (`/ws`)** carries queued, started, completed, and failed events. After commit, worker stdout wakes an ordered event dispatcher. The browser fetches a fresh snapshot on relevant events, preserving filters and pagination. Elapsed-time rendering performs no HTTP requests.
 
-The dashboard must outlive a slow exchange pull without inheriting the exchange's delay. Returning an accepted job immediately separates request lifetime from processing lifetime. All processing waits occur in a separate process. SQLite WAL permits reads of existing committed data while a batch writes; no partial batch is exposed. IDs based on seed and record index make retries idempotent, with a database primary key as the final duplicate guard. Integer paise avoids accumulating floating-point price errors in financial aggregates.
+## Timeout interpretation
 
-The worker blocks on its stdin pipe until the API supplies a job. The API awaits worker stdout for commit notifications, then broadcasts WebSocket events. No cron, scheduler, database scan interval, frontend polling loop, paid queue, or hosted pub/sub is needed. OS pipe backpressure is bounded by tiny event messages, not thousands of trade rows. Worker work survives the HTTP response because it is owned by the server lifecycle.
+The accepted-job protocol ends the browser request promptly, so a **32-second local processing delay** can finish after the stipulated HTTP limit. Configuration supports 900 seconds; automated elapsed-time tests use 32 seconds.
 
-Jobs, trade rows, and the durable event log live in one SQLite database. Completion state and the corresponding event are written in the same transaction as trades. If insertion fails, the entire batch rolls back and a separate transaction records failure. On server startup, an interrupted `running` job returns to `queued` and is sent to the replacement worker. The restarted attempt repeats the mock delay; no estimate of partially elapsed time is claimed.
+Moving a real slow upstream HTTP request into a worker protects the browser request's lifetime but **does not bypass the upstream network timeout**. Here, the delay and provider execute locally. A real exchange behind a universal 30-second cutoff would need asynchronous job IDs/callbacks, resumable short requests, or an approved network route with sufficient timeout. The direct mock HTTP route can still time out behind that cutoff.
 
-Subscribers replay all events after their cursor while holding the broadcast-registration lock, then join the live set with a delivered cursor. A single dispatcher drains the event log in ID order whenever an `asyncio.Event` is signalled by a producer. A newly accepted job therefore cannot overtake the prior completion event. There is no timed scan or polling interval. Individual slow sends have a timeout; HTTP acceptance never waits for subscribers.
+## Why no polling or cron
 
-A browser fetches a snapshot on every successful connection. The new `/api/dashboard` endpoint reads trades, aggregates, and recent jobs within one explicit read transaction, preventing mixed pre/post-commit counts. Page/search state and table scroll remain intact during automatic updates. Replay is reconciled once, with no stale completion toasts. The server clamps impossible future cursors after a local database restore and the connected acknowledgment resets the client's cursor. Clients still ignore duplicate event IDs. This is recovery-oriented at-least-once delivery, not exactly-once network delivery.
+Work starts when a user submits a job. The worker blocks on its pipe; FastAPI awaits worker output. Producer signals wake the dispatcher, which drains durable events in ID order. Clients reconnect with their last event cursor and reconcile a current snapshot. No scheduled scans, database polling interval, or repeated browser status requests are needed.
 
-## Tradeoffs and failure handling
+## Recovery and duplicate prevention
 
-| Failure or constraint | Behavior |
-|---|---|
-| HTTP connection cutoff at 30 seconds | Accept and read endpoints return promptly; delay occurs outside HTTP. |
-| Another pull requested while one runs | SQLite partial unique index rejects it; caller receives 409 and the active job ID. |
-| Network/WebSocket disconnect | Exponential reconnect backoff, durable replay cursor, then current snapshot. No HTTP polling. |
-| Duplicate dataset | `INSERT OR IGNORE` skips identical IDs; completed pull records actual inserted count. |
-| Database failure mid-batch | Atomic rollback; failed job and event; retry after fixing the cause. |
-| API/server process dies during work | Restart requeues interrupted work; committed trades remain. |
-| Worker exits unexpectedly | Active jobs fail visibly; next explicit pull starts a replacement worker. |
-| Subscriber is too slow | Send timeout, disconnect, cursor replay on reconnect. |
-| Multiple API instances sharing one database | Second startup fails before mutating job state; an OS lock enforces one API owner. |
+Trade IDs derived from seed/index are primary keys; `INSERT OR IGNORE` makes retries idempotent. A partial unique index permits only one active pull. Failed batches roll back before a separate failure event is recorded. Completion remains authoritative once committed, even if its IPC notification fails.
 
-The asynchronous `/getTrades` contract is intentional: a conventional HTTP endpoint that withholds its response for 15 minutes cannot meet a universal 30-second HTTP lifetime limit. The mock exposes a job result URL and final seeded records instead. The dashboard's named mock route and the alternative explicit POST command enter the same ingestion pipeline.
+On server restart, interrupted jobs are requeued and repeat their simulated delay. Unexpected worker exit visibly fails active jobs; the next explicit pull starts a replacement. Replay and subscription registration share a lock to avoid gaps; subscriber cursors prevent duplicate delivery during dispatch. Slow subscribers time out without delaying HTTP acceptance. Reconnect replay provides recovery, not exactly-once network delivery.
 
-No external service is required. Production scaling would replace process-local IPC with a durable broker and shared event distribution, plus a multi-writer database; that additional infrastructure is unnecessary for this local assessment.
+## Assumptions and limitations
 
-## Literal provider behavior and timeout assumptions
-
-There is one authoritative `generate_trades(seed, count)` function. The worker consumes it locally after the simulated processing delay. `/mock-bse/getTrades` is a clearly separated direct provider demonstration: it waits for its configurable delay, then returns 200 with generated trades, without creating an ingestion job or inserting rows. It demonstrates the literal delayed-data behavior under a distinct prefix; it does not contradict the named `/getTrades` orchestration contract.
-
-The original literal endpoint interpretation is “wait up to 15 minutes, then return trades.” The dashboard-facing interpretation is “accept immediately, process independently, then expose the completed result and push a notification.” A 15-minute response cannot traverse a universal 30-second HTTP lifetime cutoff. Moving the exact same blocked remote HTTP request into a worker would protect the browser request lifetime but would **not** bypass the worker's upstream network timeout.
-
-In this local mock, the worker does not issue a long network request at all: the delay is local and the seeded generator is an adapter within the worker process. Its processing lifetime is owned by the server, rather than an HTTP client. The direct provider endpoint is only a demonstration, so delays at or above 30 seconds can still fail behind the stipulated network device. It is deliberately not used as a long HTTP call by the worker.
-
-If a real upstream BSE API itself is cut off after 30 seconds, successful ingestion would require upstream support for asynchronous job IDs with callbacks/push, resumable cursors, short page/chunk requests, or an approved network route with an adequate timeout. If none exists, a worker alone cannot satisfy that upstream constraint. This project makes no claim to solve an impossible upstream protocol.
-
-## Timing and process lifecycle
-
-`ARHAM_TRACE` enables local JSONL milestones: HTTP accepted, worker started, worker finished its transactional work, DB commit completion observed after commit/connection close, and successful WebSocket send. Successful send means the transport accepted the frame, not a browser acknowledgment. Tests separately timestamp actual socket receipt. Browser DOM checkpoints use a separate `performance.now()` clock and report receipt-to-render durations within each document. Server and browser absolute clock values are never subtracted.
-
-Graceful shutdown terminates the worker and waits with a bounded timeout before killing a stuck process. Interrupted active work remains recoverable on restart. Failure of IPC after a committed batch no longer rewrites the job as failed: durable completion remains authoritative, and the server closes subscriptions to trigger replay/snapshot recovery after an unexpected worker exit. Database ownership is held with an OS file lock throughout application lifespan.
+One API process owns one worker and database, enforced by an OS-held lock. This local, zero-service-cost assessment has no real exchange connection, distributed queue, authentication, or public deployment. Proxies must allow WebSocket upgrades. Multi-host operation would require shared event distribution and different persistence/ownership choices. Mock execution dates are fixed examples; job timestamps are actual UTC times displayed in IST.

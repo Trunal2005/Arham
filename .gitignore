@@ -17,3 +17,8 @@ node_modules/
 *.db-*
 *.owner.lock
 *.log
+# Local private keys and credential exports
+*.pem
+*.key
+secrets/
+credentials.json

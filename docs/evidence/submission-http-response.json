@@ -1,0 +1,13 @@
+{
+  "method": "GET",
+  "path": "/getTrades?delay_seconds=32&record_count=3000&seed=43",
+  "status": 202,
+  "location": "/getTrades?job_id=64fb104d-7e01-4b46-ba57-c1b5b8dc8b8a",
+  "body": {
+    "job_id": "64fb104d-7e01-4b46-ba57-c1b5b8dc8b8a",
+    "status": "accepted",
+    "result_url": "/getTrades?job_id=64fb104d-7e01-4b46-ba57-c1b5b8dc8b8a"
+  },
+  "acceptanceSeconds": 0.16710339999999996,
+  "configuredDelaySeconds": 32
+}

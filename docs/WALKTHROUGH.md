@@ -2,12 +2,12 @@
 
 ## Prepared artifacts
 
-- [Machine-narrated presentation](evidence/submission-walkthrough.mp4): 103.12 seconds, local synthetic voice explicitly disclosed, architecture/module cards and the actual browser recording. It is prepared locally and has not been submitted.
+- [Machine-narrated presentation](evidence/submission-walkthrough.mp4): 118.60 seconds, disclosed local synthetic voice, architecture/module cards and actual browser recordings. The original 103.12-second presentation is retained, followed by a 15.48-second current-dashboard supplement displaying its actual captured HTTP 202 response.
 - [Raw behavioral browser recording](evidence/walkthrough.webm): 73.40 seconds, no narration. It includes a real 32-second wait, live completion, duplicates and recovery.
 - [Captions](evidence/submission-walkthrough.vtt), [chapter narration](evidence/video-chapters.json), and [packaging metadata](evidence/video-package.json).
 - [Test verification](VERIFICATION.md), [timeout backend trace](evidence/timeout-backend.json), [browser timing](evidence/timeout-browser.json), and [architecture diagrams](ARCHITECTURE.md).
 
-The video was decoded successfully with a non-silent audio track. Title/module cards and key dashboard frames were visually reviewed. The narration is local text-to-speech, not a human voice recording; review pronunciation and personalize it before sending if desired. The 900-second setting is shown and validated, but the recording does not claim to wait a full 15 minutes.
+The final MP4 passed full FFmpeg decoding and real Chrome playback/seeking, including audio decoding. See [playback verification](evidence/submission-video-verification.json) and [captured response](evidence/submission-http-response.json). The original recording shows the earlier dashboard styling; the supplement shows the current interface and clearly labels its response evidence panel as separate from product UI. The original uninterrupted 32-second scenario remains intact. Narration is local text-to-speech, not a human voice recording. The 900-second setting is validated, but no full 15-minute wait is claimed.
 
 ## Reproduce automated recording
 

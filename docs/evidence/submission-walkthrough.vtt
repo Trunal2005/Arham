@@ -48,3 +48,11 @@ and restart recovery. The nine hundred second setting is validated
 00:01:36.830 --> 00:01:41.115
 separately; this recording does not claim a full fifteen minute
 wait.
+00:01:45.120 --> 00:01:50.120
+Current dashboard and actual captured HTTP 202 response.
+
+00:01:50.120 --> 00:01:55.120
+The running job is separate from the completed request.
+
+00:01:55.120 --> 00:01:57.817
+The full 32-second completion was shown earlier.
