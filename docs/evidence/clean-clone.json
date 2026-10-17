@@ -1,0 +1,11 @@
+{
+  "status": "passed",
+  "implementation_commit": "7e779c6",
+  "local_clone": true,
+  "fresh_environment": true,
+  "dependency_install": "pip --no-index --find-links local wheelhouse",
+  "integration_tests_passed": 2,
+  "integration_test_seconds": 6.28,
+  "pip_check": "No broken requirements found",
+  "tracked_runtime_files": []
+}

@@ -12,6 +12,7 @@ Audit verified locally on **17 October 2026 (IST)**. This is engineering evidenc
 | Corrected measurement regression | 1 passed, 21 deselected in 34.73 seconds; original one-second assertion retained |
 | Final full backend suite | **22 passed in 115.37 seconds**, no failures or skipped tests |
 | Expanded Chrome browser run | **16 acceptance checks passed**, no uncaught browser exceptions, failed HTTP responses, or external resource requests |
+| Fresh local clone, fresh environment installed from local wheels with `--no-index` | **2 real integration smoke tests passed in 6.28 seconds**; `pip check` passed |
 
 Commands:
 
@@ -71,6 +72,12 @@ All tested dashboard resources are local. Non-origin requests were blocked and a
 The original demo database contains seeds 42 and 43, 6,000 unique trade IDs, total quantity **3,032,820**, and **80** unique clients. Independent Python integer accumulation from raw persisted rows matches the SQL aggregates at **624,969,894,595 paise** = **₹6,249,698,945.95** = **₹624.969894595 crore**, correctly displayed as **₹624.97Cr**. This value is not inferred from a screenshot. [Financial evidence](evidence/financial-summary.json) retains the calculation.
 
 The dataset's execution date is intentionally simulated (1 January 2026), explicitly labeled in the ledger. Pull creation/completion timestamps are actual UTC values displayed in IST. All monetary aggregation uses integer paise; the UI converts only for formatting.
+
+An additional read-only check over all 6,000 persisted demo records verified unique ID formats, client IDs in 1–80, membership in the provider's symbol universe, quantities of 5–1,000 in multiples of 5, integer positive prices, and UTC offsets.
+
+## Clean-clone reproducibility
+
+Implementation commit `7e779c6` was cloned locally into an ignored test folder. A new Python 3.13 virtual environment was created without system site packages and its dependencies installed with `pip install --no-index --find-links test-results/wheelhouse -r requirements-dev.txt` after preparing the local wheel cache. From the clone's own working directory, its own API/worker source passed `test_full_ingestion_and_websocket` and `test_literal_provider_returns_same_seed_without_ingesting`: **2 passed in 6.28 seconds**. The [retained report](evidence/clean-clone-results.xml) and `pip check` confirm this check. Runtime databases/environments were not copied into the clone. The follow-up commit only records documentation/evidence.
 
 ## Media and static checks
 

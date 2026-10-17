@@ -2,6 +2,8 @@
 
 A local trade dashboard for the Arham Fintech Software Engineer assessment. It stays usable during a long exchange pull and updates connected dashboards automatically when trades are committed.
 
+The completed readiness audit, exact changes, measured results and handoff commands are in the [final engineering report](docs/FINAL_REPORT.md).
+
 **No paid services, API keys, credit card, cloud account, Redis, Docker, or frontend build are required.** Python, FastAPI, SQLite, the browser, and the worker run on your own machine. Once dependencies are installed, the application works offline. Your existing computer, electricity, and internet connection are outside the software's zero-service-cost claim.
 
 ## Run on Windows
