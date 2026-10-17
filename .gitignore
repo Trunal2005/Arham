@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+.pytest_cache/
+.pytest-tmp/
+.pytest-verified/
+*.pyc
+data/
+test-results/
+node_modules/
+.env

@@ -1,0 +1,18 @@
+{
+  "status": "passed",
+  "checks": [
+    "empty state",
+    "idle without polling",
+    "background pull",
+    "two-tab live update",
+    "search",
+    "pagination",
+    "cached trades during pull",
+    "offline reconnect",
+    "mobile layout",
+    "no browser errors"
+  ],
+  "browser": "155.0.8059.80",
+  "httpRequests": 47,
+  "checkedAt": "2026-10-17T10:32:57.155Z"
+}

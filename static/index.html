@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#101c32">
+  <title>Trade Desk · Arham Fintech</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%23101c32'/%3E%3Cpath d='m8 29 12-20 12 20h-7l-5-9-5 9' fill='%2373e5b0'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="/static/app.js" defer></script>
+</head>
+<body>
+  <aside class="sidebar">
+    <a class="brand" href="/" aria-label="Arham home"><span class="brand-icon">A<span></span></span><span>arham<span class="brand-sub">FINTECH</span></span></a>
+    <div class="workspace-label">WORKSPACE</div>
+    <a class="nav active" href="/" aria-current="page"><span aria-hidden="true">▦</span> Trade overview <span class="nav-dot"></span></a>
+    <div class="sidebar-note"><div class="note-icon">↗</div><strong>Built for the long pull.</strong><p>Your trades stay available while new data arrives in the background.</p><span>LOCAL WORKSPACE <span class="tiny-dot"></span></span></div>
+    <div class="sidebar-bottom"><span class="avatar">AF</span><div>Assessment workspace<small>Local · No API keys required</small></div></div>
+  </aside>
+  <main>
+    <header class="topbar"><div><span class="breadcrumb">Workspace</span><span class="slash">/</span>Trade overview</div><span class="environment"><span class="tiny-dot"></span> Local environment</span></header>
+    <div class="content">
+      <div class="heading"><div><div class="eyebrow">YOUR EXCHANGE, IN VIEW</div><h1>Trade overview<span>.</span></h1><p>One place for every trade. Updated as your data arrives.</p></div><button class="primary" id="open-pull"><span aria-hidden="true">↓</span> Pull exchange data</button></div>
+      <div class="status-line"><span id="connection" class="connection connecting"><span class="tiny-dot"></span>Connecting to live updates</span><span class="status-divider"></span><span>BSE mock exchange</span><span class="status-end" id="last-update">No pulls completed yet</span></div>
+      <div class="alert" id="error" role="alert" hidden></div>
+      <section class="metrics" aria-label="Trade statistics">
+        <article class="metric"><div class="metric-label">Total trades <span>↗</span></div><strong id="total-trades">—</strong><small>Persisted exchange records</small></article>
+        <article class="metric"><div class="metric-label">Traded value <span>₹</span></div><strong id="total-value">—</strong><small>Quantity × execution price</small></article>
+        <article class="metric"><div class="metric-label">Total quantity <span>≋</span></div><strong id="total-quantity">—</strong><small>Units across all symbols</small></article>
+        <article class="metric"><div class="metric-label">Active clients <span>♧</span></div><strong id="total-clients">—</strong><small>Unique clients in your data</small></article>
+      </section>
+      <section class="pull-banner" id="pull-banner" hidden aria-live="polite"><div class="spinner"></div><div><strong id="pull-title">Exchange pull in progress</strong><p id="pull-detail">Your saved trades are still available. New trades will appear automatically.</p></div><span class="badge amber" id="pull-state">RUNNING</span></section>
+      <div class="body-grid">
+        <section class="panel trades-panel" aria-labelledby="trades-title">
+          <div class="panel-heading"><div><h2 id="trades-title">Trade ledger <span class="count-badge" id="ledger-count">0</span></h2><p>Committed trades from your exchange pulls</p></div><span class="badge outline">BSE</span></div>
+          <div class="table-toolbar"><label class="search"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Search symbol, client or trade ID…" aria-label="Search trades" maxlength="100"></label><label class="page-size">Rows <select id="page-size" aria-label="Rows per page"><option>25</option><option selected>50</option><option>100</option></select></label></div>
+          <div class="table-wrap"><table><thead><tr><th scope="col">Trade ID</th><th scope="col">Client</th><th scope="col">Symbol</th><th scope="col" class="numeric">Quantity</th><th scope="col" class="numeric">Price</th><th scope="col">Executed at <span class="timezone">IST</span></th></tr></thead><tbody id="trade-rows"></tbody></table></div>
+          <div class="empty" id="empty" hidden><div class="empty-icon">↙</div><h3>No trades yet</h3><p>Start your first exchange pull.<br>Your ledger will fill automatically when it completes.</p><button class="secondary" id="empty-pull">Pull exchange data <span>↗</span></button></div>
+          <div class="table-footer"><span id="pagination-info" aria-live="polite">Loading trades…</span><div><button class="page-button" id="previous" aria-label="Previous page">←</button><span id="page-number">Page 1</span><button class="page-button" id="next" aria-label="Next page">→</button></div></div>
+        </section>
+        <aside class="right-column">
+          <section class="panel activity-panel"><div class="panel-heading"><div><h2>Pull activity</h2><p>Your latest exchange requests</p></div><span class="live-dot" aria-hidden="true"></span></div><div id="activity" class="activity-list"><p class="muted">Loading activity…</p></div></section>
+          <section class="panel symbols-panel"><div class="panel-heading"><div><h2>Symbol distribution</h2><p>Share of traded value</p></div></div><div id="symbols" class="symbol-list"><p class="muted">Available after your first pull.</p></div></section>
+          <div class="assurance"><span>◈</span><p><strong>Always available</strong><br>Saved trades load immediately. A background pull never blocks your ledger.</p></div>
+        </aside>
+      </div>
+      <footer class="footer"><span>ARHAM FINTECH <span class="footer-dot">·</span> TRADE DESK</span><span>Mock data only <span class="footer-dot">·</span> Stored on this device</span></footer>
+    </div>
+  </main>
+  <dialog id="pull-dialog" aria-labelledby="dialog-title"><form id="pull-form"><div class="dialog-top"><span class="eyebrow">EXCHANGE INGESTION</span><button type="button" id="close-dialog" class="close" aria-label="Close dialog">×</button></div><h2 id="dialog-title">Pull exchange data</h2><p>Start a background pull from the mock BSE exchange. You can keep using the dashboard while it runs.</p><label>Simulated exchange delay <span>seconds</span><input id="delay" name="delay" type="number" min="0" max="900" step="0.1" value="5" required></label><small>Use 900 seconds to demonstrate the full 15-minute scenario.</small><div class="form-grid"><label>Trade records<input id="record-count" type="number" min="1" max="10000" value="3000" required></label><label>Dataset seed<input id="seed" type="number" min="0" max="2147483647" value="42" required></label></div><div class="form-note">Same seed + same records = same trade IDs. Repeat pulls safely skip duplicates. A new seed adds a new dataset.</div><div id="form-error" role="alert" class="form-error" hidden></div><button type="submit" id="submit-pull" class="primary">Start background pull <span>↗</span></button></form></dialog>
+  <div class="toast" id="toast" role="status" hidden></div>
+</body>
+</html>
