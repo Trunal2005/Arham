@@ -4,6 +4,8 @@ A local trade dashboard for the Arham Fintech Software Engineer assessment. It s
 
 The completed readiness audit, exact changes, measured results and handoff commands are in the [final engineering report](docs/FINAL_REPORT.md).
 
+The latest [visible UI redesign](docs/UI_REDESIGN.md) includes matching before/after screenshots, prominent ingestion states, and fresh regression results. Open `http://127.0.0.1:8000/?ui=2` to load the redesigned interface; an old tab may need Ctrl+F5 once for the new assets.
+
 **No paid services, API keys, credit card, cloud account, Redis, Docker, or frontend build are required.** Python, FastAPI, SQLite, the browser, and the worker run on your own machine. Once dependencies are installed, the application works offline. Your existing computer, electricity, and internet connection are outside the software's zero-service-cost claim.
 
 ## Run on Windows

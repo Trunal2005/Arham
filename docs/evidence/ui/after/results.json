@@ -1,0 +1,28 @@
+{
+  "phase": "after",
+  "status": "passed",
+  "checks": [
+    "honest skeleton loading before snapshot",
+    "tablet layout without document overflow",
+    "matching seeded data",
+    "desktop/mobile without overflow",
+    "real active job ID and elapsed",
+    "saved trades during pull",
+    "automatic success",
+    "real worker failure preserves cached data",
+    "retry prefilled correctly and recovers",
+    "injected 503 has explicit error state and manual retry"
+  ],
+  "errors": [],
+  "deliberatelyInjectedHttpStatuses": [
+    503,
+    503
+  ],
+  "browser": "155.0.8059.80",
+  "viewport": {
+    "width": 1440,
+    "height": 1050
+  },
+  "dataset": "seeds 42+43: 6000; running seed44: +3000",
+  "checkedAt": "2026-10-17T11:41:42.064Z"
+}

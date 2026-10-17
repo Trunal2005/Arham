@@ -5,48 +5,81 @@
   <meta name="theme-color" content="#101c32">
   <title>Trade Desk · Arham Fintech</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%23101c32'/%3E%3Cpath d='m8 29 12-20 12 20h-7l-5-9-5 9' fill='%2373e5b0'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="/static/style.css">
-  <script src="/static/app.js" defer></script>
+  <link rel="stylesheet" href="/static/style.css?v=ui-2">
+  <script src="/static/app.js?v=ui-2" defer></script>
 </head>
 <body>
+  <svg class="icon-library" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><defs>
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 16v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4"/></symbol>
+    <symbol id="i-ledger" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 21v-3a6 6 0 0 1 12 0v3m2-17a3 3 0 0 1 0 6m1 4a5 5 0 0 1 3 5v2"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 10 5-10 5L2 8 12 3ZM2 12l10 5 10-5M2 16l10 5 10-5"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol>
+    <symbol id="i-device" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="13" rx="2"/><path d="M8 21h8m-4-5v5"/></symbol>
+  </defs></svg>
+  <a class="skip-link" href="#trades-title">Skip to trade ledger</a>
   <aside class="sidebar">
-    <a class="brand" href="/" aria-label="Arham home"><span class="brand-icon">A<span></span></span><span>arham<span class="brand-sub">FINTECH</span></span></a>
-    <div class="workspace-label">WORKSPACE</div>
-    <a class="nav active" href="/" aria-current="page"><span aria-hidden="true">▦</span> Trade overview <span class="nav-dot"></span></a>
-    <div class="sidebar-note"><div class="note-icon">↗</div><strong>Built for the long pull.</strong><p>Your trades stay available while new data arrives in the background.</p><span>LOCAL WORKSPACE <span class="tiny-dot"></span></span></div>
-    <div class="sidebar-bottom"><span class="avatar">AF</span><div>Assessment workspace<small>Local · No API keys required</small></div></div>
+    <a class="brand" href="/" aria-label="Arham home"><span class="brand-icon">A</span><span>arham<span class="brand-sub">FINTECH</span></span></a>
+    <div class="workspace-label">YOUR WORKSPACE</div>
+    <a class="nav active" href="/" aria-current="page"><svg class="icon"><use href="#i-grid"/></svg> Trade overview <span class="nav-dot"></span></a>
+    <a class="nav" href="#trades-title"><svg class="icon"><use href="#i-ledger"/></svg> Jump to ledger <span aria-hidden="true">↘</span></a>
+    <div class="sidebar-note"><span class="note-tag"><span class="tiny-dot"></span> LOCAL EXCHANGE</span><strong>Long pulls.<br>Uninterrupted work.</strong><p>Your saved trades stay available while the next batch arrives.</p><a href="#ingestion-panel">View exchange status <span aria-hidden="true">→</span></a></div>
+    <div class="sidebar-bottom"><svg class="icon"><use href="#i-device"/></svg><div>Assessment workspace<small>Data stored on this device</small></div></div>
   </aside>
-  <main>
-    <header class="topbar"><div><span class="breadcrumb">Workspace</span><span class="slash">/</span>Trade overview</div><span class="environment"><span class="tiny-dot"></span> Local environment</span></header>
+  <main id="overview">
+    <header class="topbar"><div class="topbar-title"><span class="breadcrumb">Workspace</span><span class="slash">/</span><strong>BSE trade desk</strong></div><div class="topbar-status"><span id="connection" class="connection connecting"><span class="tiny-dot"></span>Connecting to live updates</span><span class="environment">Local environment</span></div></header>
     <div class="content">
-      <div class="heading"><div><div class="eyebrow">YOUR EXCHANGE, IN VIEW</div><h1>Trade overview<span>.</span></h1><p>One place for every trade. Updated as your data arrives.</p></div><button class="primary" id="open-pull"><span aria-hidden="true">↓</span> Pull exchange data</button></div>
-      <div class="status-line"><span id="connection" class="connection connecting"><span class="tiny-dot"></span>Connecting to live updates</span><span class="status-divider"></span><span>BSE mock exchange</span><span class="status-end" id="last-update">No pulls completed yet</span></div>
+      <div class="heading"><div><div class="eyebrow">EXCHANGE OPERATIONS</div><h1>Trade overview<span>.</span></h1><p>Your trades, in focus. Your next pull, in the background.</p></div><button class="primary" id="open-pull"><svg class="icon"><use href="#i-download"/></svg><span>Pull exchange data</span></button></div>
+      <div class="status-line"><span><span class="tiny-dot"></span> BSE mock exchange</span><span class="status-divider"></span><span>Simulated trade data</span><span class="status-end" id="last-update">No pulls completed yet</span></div>
       <div class="alert" id="error" role="alert" hidden></div>
-      <section class="metrics" aria-label="Trade statistics">
-        <article class="metric"><div class="metric-label">Total trades <span>↗</span></div><strong id="total-trades">—</strong><small>Persisted exchange records</small></article>
-        <article class="metric"><div class="metric-label">Traded value <span>₹</span></div><strong id="total-value">—</strong><small>Quantity × execution price</small></article>
-        <article class="metric"><div class="metric-label">Total quantity <span>≋</span></div><strong id="total-quantity">—</strong><small>Units across all symbols</small></article>
-        <article class="metric"><div class="metric-label">Active clients <span>♧</span></div><strong id="total-clients">—</strong><small>Unique clients in your data</small></article>
+      <section class="metrics is-loading" aria-label="Trade statistics" id="metrics">
+        <article class="metric"><div class="metric-label">Total trades <span class="metric-icon"><svg class="icon"><use href="#i-ledger"/></svg></span></div><strong id="total-trades">—</strong><small>Saved exchange records</small></article>
+        <article class="metric metric-featured"><div class="metric-label">Traded value <span class="metric-icon rupee">₹</span></div><strong id="total-value">—</strong><small>Quantity × execution price</small></article>
+        <article class="metric"><div class="metric-label">Total quantity <span class="metric-icon"><svg class="icon"><use href="#i-layers"/></svg></span></div><strong id="total-quantity">—</strong><small>Units across all symbols</small></article>
+        <article class="metric"><div class="metric-label">Active clients <span class="metric-icon"><svg class="icon"><use href="#i-users"/></svg></span></div><strong id="total-clients">—</strong><small>Unique clients in your ledger</small></article>
       </section>
-      <section class="pull-banner" id="pull-banner" hidden aria-live="polite"><div class="spinner" aria-hidden="true"></div><div><strong id="pull-title">Exchange pull in progress</strong><p id="pull-detail">Your saved trades are still available. New trades will appear automatically.</p><p class="job-meta"><span id="pull-job-id"></span> · <span id="pull-elapsed" role="timer" aria-live="off">Elapsed 0:00</span></p></div><span class="badge amber" id="pull-state">RUNNING</span></section>
+
+      <section id="ingestion-panel" class="ingestion-panel" data-state="loading" aria-labelledby="pull-title" aria-busy="false">
+        <div class="ingestion-heading"><div class="ingestion-intro"><div id="ingestion-icon" class="ingestion-icon" aria-hidden="true"><svg class="icon"><use href="#i-clock"/></svg></div><div><div class="section-kicker">EXCHANGE INGESTION <span class="badge" id="pull-state">LOADING</span></div><h2 id="pull-title" aria-live="polite">Reading your exchange workspace</h2><p id="pull-detail">Loading saved trades and recent exchange activity…</p></div></div><button id="retry-pull" class="secondary" hidden>Retry pull <span aria-hidden="true">↗</span></button><a class="ledger-link" id="ledger-link" href="#trades-title" hidden>View saved trades <svg class="icon"><use href="#i-arrow"/></svg></a></div>
+        <div id="pull-banner" class="pull-banner" hidden>
+          <div class="job-grid"><div><span class="job-label">Elapsed time</span><strong id="pull-elapsed" role="timer" aria-live="off">Elapsed 0:00</strong></div><div><span class="job-label">Configured delay</span><strong id="pull-delay">—</strong></div><div><span class="job-label">Requested records</span><strong id="pull-records">—</strong></div><div class="job-identity"><span class="job-label">Job reference</span><span id="pull-job-id">—</span></div></div>
+          <div class="processing-rail" aria-hidden="true"><span></span></div>
+        </div>
+        <div id="pull-result" class="pull-result" hidden><div><span class="job-label">New records</span><strong id="result-inserted">—</strong></div><div><span class="job-label">Duplicates skipped</span><strong id="result-duplicates">—</strong></div><div><span class="job-label">Processing time</span><strong id="result-duration">—</strong></div><div class="job-identity"><span class="job-label">Job reference</span><span id="result-job">—</span></div></div>
+        <ol class="sync-steps" id="sync-steps" aria-label="Ingestion stages"><li data-step="accepted"><span>1</span>Request accepted</li><li data-step="processing"><span>2</span>Processing trades</li><li data-step="committed"><span>3</span>Batch committed</li><li data-step="updated"><span>4</span>Ledger updated</li></ol>
+      </section>
+
       <div class="body-grid">
-        <section class="panel trades-panel" aria-labelledby="trades-title">
-          <div class="panel-heading"><div><h2 id="trades-title">Trade ledger <span class="count-badge" id="ledger-count">0</span></h2><p>Simulated exchange date: 01 Jan 2026 · Newest first</p></div><span class="badge outline">BSE</span></div>
-          <div class="table-toolbar"><label class="search"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Search symbol, client or trade ID…" aria-label="Search trades" maxlength="100"></label><label class="page-size">Rows <select id="page-size" aria-label="Rows per page"><option>25</option><option selected>50</option><option>100</option></select></label></div>
-          <div class="table-wrap" tabindex="0" role="region" aria-label="Trade ledger, scroll for more rows and columns"><table><thead><tr><th scope="col">Trade ID</th><th scope="col">Client</th><th scope="col">Symbol</th><th scope="col" class="numeric">Quantity</th><th scope="col" class="numeric">Price</th><th scope="col">Executed at <span class="timezone">IST</span></th></tr></thead><tbody id="trade-rows"></tbody></table></div>
-          <div class="empty" id="empty" hidden><div class="empty-icon">↙</div><h3>No trades yet</h3><p>Start your first exchange pull.<br>Your ledger will fill automatically when it completes.</p><button class="secondary" id="empty-pull">Pull exchange data <span>↗</span></button></div>
-          <div class="table-footer"><span id="pagination-info" aria-live="polite">Loading trades…</span><div><button class="page-button" id="previous" aria-label="Previous page">←</button><span id="page-number">Page 1</span><button class="page-button" id="next" aria-label="Next page">→</button></div></div>
+        <section class="panel trades-panel" aria-labelledby="trades-title" aria-busy="true">
+          <div class="panel-heading"><div><div class="section-kicker">PERSISTED RECORDS</div><h2 id="trades-title" tabindex="-1">Trade ledger <span class="count-badge" id="ledger-count">—</span></h2><p>Simulated exchange date: 01 Jan 2026 <span class="dot-separator">·</span> Newest first</p></div><span class="exchange-tag">BSE</span></div>
+          <div class="update-feedback" id="update-feedback" role="status" hidden></div>
+          <div class="table-toolbar"><label class="search"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg><input id="search" type="search" placeholder="Search trades, clients or symbols" aria-label="Search trades" maxlength="100"></label><label class="page-size">Show <select id="page-size" aria-label="Rows per page"><option>25</option><option selected>50</option><option>100</option></select><span>rows</span></label></div>
+          <div id="ledger-loading" class="ledger-loading" role="status" aria-label="Loading saved trades"><span class="loading-caption">Loading your saved trades…</span><div></div><div></div><div></div><div></div></div>
+          <div class="table-wrap" tabindex="0" role="region" aria-label="Trade ledger, scroll for more rows and columns"><table><thead><tr><th scope="col">Trade reference</th><th scope="col">Client</th><th scope="col">Symbol</th><th scope="col" class="numeric">Quantity</th><th scope="col" class="numeric">Price <span class="timezone">INR</span></th><th scope="col">Executed at <span class="timezone">IST</span></th></tr></thead><tbody id="trade-rows"></tbody></table></div>
+          <div class="empty" id="empty" hidden><div class="empty-icon"><svg class="icon"><use href="#i-ledger"/></svg></div><h3>Your ledger starts here</h3><p>Pull your first batch from the mock exchange.<br>New trades appear here automatically when the pull finishes.</p><button class="secondary" id="empty-pull">Pull exchange data <svg class="icon"><use href="#i-arrow"/></svg></button></div>
+          <div class="table-footer"><span id="pagination-info" aria-live="polite">Loading saved trades…</span><div><button class="page-button" id="previous" aria-label="Previous page" disabled>←</button><span id="page-number">Page 1</span><button class="page-button" id="next" aria-label="Next page" disabled>→</button></div></div>
         </section>
         <aside class="right-column">
-          <section class="panel activity-panel"><div class="panel-heading"><div><h2>Pull activity</h2><p>Your latest exchange requests</p></div><span class="live-dot" aria-hidden="true"></span></div><div id="activity" class="activity-list"><p class="muted">Loading activity…</p></div></section>
-          <section class="panel symbols-panel"><div class="panel-heading"><div><h2>Symbol distribution</h2><p>Share of traded value</p></div></div><div id="symbols" class="symbol-list"><p class="muted">Available after your first pull.</p></div></section>
-          <div class="assurance"><span>◈</span><p><strong>Always available</strong><br>Saved trades load immediately. A background pull never blocks your ledger.</p></div>
+          <section class="panel activity-panel"><div class="panel-heading"><div><div class="section-kicker">EXCHANGE HISTORY</div><h2>Pull activity</h2></div><span class="live-dot" aria-hidden="true"></span></div><div id="activity" class="activity-list"><p class="muted">Loading activity…</p></div></section>
+          <section class="panel symbols-panel"><div class="panel-heading"><div><div class="section-kicker">BY TRADED VALUE</div><h2>Symbol distribution</h2></div></div><div id="symbols" class="symbol-list"><p class="muted">Your symbol breakdown will appear after the first pull.</p></div></section>
+          <div class="assurance"><svg class="icon"><use href="#i-check"/></svg><p><strong>A ledger that stays available</strong>Saved trades remain usable during every exchange pull.</p></div>
         </aside>
       </div>
-      <footer class="footer"><span>ARHAM FINTECH <span class="footer-dot">·</span> TRADE DESK</span><span>Mock data only <span class="footer-dot">·</span> Stored on this device</span></footer>
+      <footer class="footer"><span>ARHAM FINTECH <span class="footer-dot">/</span> TRADE DESK</span><span>Mock exchange data <span class="footer-dot">·</span> Stored on this device</span></footer>
     </div>
   </main>
-  <dialog id="pull-dialog" aria-labelledby="dialog-title" aria-describedby="dialog-description"><form id="pull-form"><div class="dialog-top"><span class="eyebrow">EXCHANGE INGESTION</span><button type="button" id="close-dialog" class="close" aria-label="Close dialog">×</button></div><h2 id="dialog-title">Pull exchange data</h2><p id="dialog-description">Start a background pull from the mock BSE exchange. You can keep using the dashboard while it runs.</p><div class="delay-presets" role="group" aria-label="Delay presets"><button type="button" data-delay="5">5s quick demo</button><button type="button" data-delay="32">32s timeout proof</button><button type="button" data-delay="900">900s · 15 minutes</button></div><label>Simulated exchange delay <span>seconds</span><input id="delay" name="delay" type="number" min="0" max="900" step="0.1" value="5" aria-describedby="delay-help" required></label><small id="delay-help">Choose a preset or enter a custom delay. 900 seconds simulates 15 minutes.</small><div class="form-grid"><label>Trade records<input id="record-count" type="number" min="1" max="10000" value="3000" required></label><label>Dataset seed<input id="seed" type="number" min="0" max="2147483647" value="42" required></label></div><div class="form-note">Same seed + same records = same trade IDs. Repeat pulls safely skip duplicates. A new seed adds a new dataset.</div><div id="form-error" role="alert" class="form-error" hidden></div><button type="submit" id="submit-pull" class="primary">Start background pull <span>↗</span></button></form></dialog>
+  <dialog id="pull-dialog" aria-labelledby="dialog-title" aria-describedby="dialog-description">
+    <form id="pull-form"><div class="dialog-top"><span class="eyebrow">NEW EXCHANGE PULL</span><button type="button" id="close-dialog" class="close" aria-label="Close dialog">×</button></div><div class="dialog-icon"><svg class="icon"><use href="#i-download"/></svg></div><h2 id="dialog-title">Bring in your next batch.</h2><p id="dialog-description">Choose your mock dataset and processing time. Your saved ledger stays available while the pull runs.</p>
+      <fieldset class="preset-fieldset"><legend>Processing delay</legend><div class="delay-presets" role="group" aria-label="Delay presets"><button type="button" data-delay="5"><strong>5 seconds</strong><span>Quick demo</span></button><button type="button" data-delay="32"><strong>32 seconds</strong><span>Timeout proof</span></button><button type="button" data-delay="900"><strong>15 minutes</strong><span>900 seconds</span></button></div></fieldset>
+      <label for="delay">Custom delay <span>seconds</span></label><input id="delay" name="delay" type="number" min="0" max="900" step="0.1" value="5" aria-describedby="delay-help" required><small id="delay-help">Up to 900 seconds. Elapsed time is shown while processing; no estimated percentage.</small>
+      <div class="form-grid"><div><label for="record-count">Trade records</label><input id="record-count" type="number" min="1" max="10000" value="3000" required><small>1 to 10,000 records</small></div><div><label for="seed">Dataset seed</label><input id="seed" type="number" min="0" max="2147483647" value="42" required><small>Same seed reuses trade IDs</small></div></div>
+      <div class="form-note"><svg class="icon"><use href="#i-layers"/></svg><span>Repeat pulls skip duplicates. Use a new seed to add a different dataset.</span></div><div id="form-error" role="alert" class="form-error" hidden></div><button type="submit" id="submit-pull" class="primary"><span id="submit-label">Start background pull</span><svg class="icon"><use href="#i-arrow"/></svg></button>
+    </form>
+  </dialog>
   <div class="toast" id="toast" role="status" hidden></div>
 </body>
 </html>

@@ -1,0 +1,22 @@
+{
+  "files": [
+    "browser-results.json",
+    "cached-trades-during-pull.png",
+    "dashboard-desktop.png",
+    "dashboard-mobile.png",
+    "dashboard-tablet.png",
+    "duplicates-skipped.png",
+    "empty-desktop.png",
+    "last-browser-state.png",
+    "pull-configuration.png",
+    "pull-in-progress.png",
+    "search.png",
+    "timeout-backend.json",
+    "timeout-browser.json",
+    "timeout-completed.png",
+    "timeout-running-after-30s.png",
+    "video-chapters.json",
+    "walkthrough.webm"
+  ],
+  "reason": "New UI regression outputs retained separately; original readiness-audit artifacts preserved"
+}

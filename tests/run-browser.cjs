@@ -5,7 +5,8 @@ const path = require('node:path');
 const net = require('node:net');
 
 async function main() {
-  if (process.env.BASE_URL) return require('./browser.cjs').run();
+  const suite = process.env.UI_PHASE ? './ui-visual.cjs' : './browser.cjs';
+  if (process.env.BASE_URL) return require(suite).run();
   const root = path.resolve(__dirname, '..');
   const folder = path.join(root, 'test-results', `browser-${Date.now()}`);
   fs.mkdirSync(folder, {recursive: true});
@@ -36,7 +37,7 @@ async function main() {
   }
   try {
     await start();
-    await require('./browser.cjs').run({restartServer: async () => {await stop(); await start();}, crashWorker: async () => {
+    await require(suite).run({restartServer: async () => {await stop(); await start();}, crashWorker: async () => {
       const health = await (await fetch(process.env.BASE_URL + '/api/health')).json();
       if (!Number.isInteger(health.worker_pid) || health.worker_pid <= 0) throw new Error('Missing owned worker PID');
       if (process.platform === 'win32') execFileSync('taskkill', ['/PID', String(health.worker_pid), '/F'], {windowsHide: true, stdio: 'ignore'});

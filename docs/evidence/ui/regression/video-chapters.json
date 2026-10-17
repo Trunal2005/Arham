@@ -1,0 +1,27 @@
+[
+  {
+    "seconds": 0.33022,
+    "title": "The problem",
+    "narration": "The exchange may take fifteen minutes, but ordinary HTTP connections end after thirty seconds. This local dashboard separates acceptance, background work, and live updates."
+  },
+  {
+    "seconds": 4.0176714,
+    "title": "Short request, separate worker",
+    "narration": "Choose a delay and a reproducible seed. The request returns accepted promptly. A separate Python worker waits locally, while the saved ledger remains available."
+  },
+  {
+    "seconds": 20.5259744,
+    "title": "The real 32-second test",
+    "narration": "This pull really waits thirty two seconds. The acceptance request has already ended. During the wait, the ledger stays usable. The worker commits all records and its completion event atomically. A blocking pipe wakes one ordered event dispatcher. WebSocket then updates both tabs without polling. Moving a remote HTTP request into a worker would not bypass an upstream network timeout; this mock processing happens locally."
+  },
+  {
+    "seconds": 55.465074099999995,
+    "title": "Idempotence and recovery",
+    "narration": "Repeating the same seed skips duplicates. Search and pagination stay in place during automatic updates. Durable events replay after a disconnection, and database transactions prevent partial batches."
+  },
+  {
+    "seconds": 75.18515119999999,
+    "title": "Engineering evidence",
+    "narration": "The code separates API orchestration, the worker, the seeded provider, and SQLite transactions. Reproducible tests cover timeouts, concurrent requests, failure rollback, ordered delivery, and restart recovery. The nine hundred second setting is validated separately; this recording does not claim a full fifteen minute wait."
+  }
+]
