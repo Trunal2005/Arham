@@ -1,0 +1,15 @@
+{
+  "trade_count": 6000,
+  "total_quantity": 3032820,
+  "value_paise": 624969894595,
+  "unique_clients": 80,
+  "value_rupees": "6249698945.95",
+  "value_crore": "624.969894595",
+  "displayed_crore": "624.97",
+  "dataset_seeds": [
+    42,
+    43
+  ],
+  "method": "Independent Python integer accumulation from raw persisted rows, checked against SQL aggregates",
+  "status": "passed"
+}

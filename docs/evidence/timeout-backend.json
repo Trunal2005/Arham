@@ -1,0 +1,129 @@
+{
+  "clock": "time.monotonic, same local OS boot; browser clock measured separately",
+  "job_id": "863a3b79-96a3-4cfa-a253-5ff25d172cf2",
+  "http_acceptance_seconds": 0.01790270000037708,
+  "initiating_client_closed": true,
+  "worker_started": 4960.2131044,
+  "worker_finished": 4992.3132091,
+  "database_committed": 4992.3556582,
+  "first_client_received": 4992.3699179,
+  "second_client_received": 4992.3710605,
+  "total_elapsed_seconds": 32.1780418999997,
+  "cached_read_samples": [
+    {
+      "elapsed_seconds": 0.018227999999908207,
+      "duration_seconds": 0.06612750000022061,
+      "trades": 100
+    },
+    {
+      "elapsed_seconds": 10.006099999999606,
+      "duration_seconds": 0.01529850000042643,
+      "trades": 100
+    },
+    {
+      "elapsed_seconds": 20.002524900000026,
+      "duration_seconds": 0.015264800000295509,
+      "trades": 100
+    },
+    {
+      "elapsed_seconds": 30.51461780000045,
+      "duration_seconds": 0.03152579999914451,
+      "trades": 100
+    }
+  ],
+  "trace": [
+    {
+      "stage": "http.accepted",
+      "job_id": "863a3b79-96a3-4cfa-a253-5ff25d172cf2",
+      "monotonic": 4960.208454,
+      "utc": "2026-10-17T11:11:23.132395+00:00",
+      "pid": 28148,
+      "delay_seconds": 32.0
+    },
+    {
+      "stage": "worker.started",
+      "job_id": "863a3b79-96a3-4cfa-a253-5ff25d172cf2",
+      "monotonic": 4960.2131044,
+      "utc": "2026-10-17T11:11:23.137052+00:00",
+      "pid": 27516
+    },
+    {
+      "stage": "websocket.notified",
+      "job_id": "863a3b79-96a3-4cfa-a253-5ff25d172cf2",
+      "monotonic": 4960.2314943,
+      "utc": "2026-10-17T11:11:23.155438+00:00",
+      "pid": 28148,
+      "event_id": 4,
+      "type": "pull.queued",
+      "client_id": "1943395458560"
+    },
+    {
+      "stage": "websocket.notified",
+      "job_id": "863a3b79-96a3-4cfa-a253-5ff25d172cf2",
+      "monotonic": 4960.2328941,
+      "utc": "2026-10-17T11:11:23.156837+00:00",
+      "pid": 28148,
+      "event_id": 4,
+      "type": "pull.queued",
+      "client_id": "1943396427696"
+    },
+    {
+      "stage": "websocket.notified",
+      "job_id": "863a3b79-96a3-4cfa-a253-5ff25d172cf2",
+      "monotonic": 4960.2734287,
+      "utc": "2026-10-17T11:11:23.197373+00:00",
+      "pid": 28148,
+      "event_id": 5,
+      "type": "pull.started",
+      "client_id": "1943395458560"
+    },
+    {
+      "stage": "websocket.notified",
+      "job_id": "863a3b79-96a3-4cfa-a253-5ff25d172cf2",
+      "monotonic": 4960.2746934,
+      "utc": "2026-10-17T11:11:23.198635+00:00",
+      "pid": 28148,
+      "event_id": 5,
+      "type": "pull.started",
+      "client_id": "1943396427696"
+    },
+    {
+      "stage": "worker.finished",
+      "job_id": "863a3b79-96a3-4cfa-a253-5ff25d172cf2",
+      "monotonic": 4992.3132091,
+      "utc": "2026-10-17T11:11:55.237148+00:00",
+      "pid": 27516,
+      "event_id": 6,
+      "inserted_count": 3000
+    },
+    {
+      "stage": "database.committed",
+      "job_id": "863a3b79-96a3-4cfa-a253-5ff25d172cf2",
+      "monotonic": 4992.3556582,
+      "utc": "2026-10-17T11:11:55.279607+00:00",
+      "pid": 27516,
+      "event_id": 6
+    },
+    {
+      "stage": "websocket.notified",
+      "job_id": "863a3b79-96a3-4cfa-a253-5ff25d172cf2",
+      "monotonic": 4992.3696948,
+      "utc": "2026-10-17T11:11:55.293636+00:00",
+      "pid": 28148,
+      "event_id": 6,
+      "type": "pull.completed",
+      "client_id": "1943395458560"
+    },
+    {
+      "stage": "websocket.notified",
+      "job_id": "863a3b79-96a3-4cfa-a253-5ff25d172cf2",
+      "monotonic": 4992.3708816,
+      "utc": "2026-10-17T11:11:55.294819+00:00",
+      "pid": 28148,
+      "event_id": 6,
+      "type": "pull.completed",
+      "client_id": "1943396427696"
+    }
+  ],
+  "status": "passed"
+}

@@ -1,0 +1,50 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:07.343
+The exchange may take fifteen minutes, but ordinary HTTP
+connections end after thirty seconds. This local dashboard
+
+00:00:07.343 --> 00:00:10.919
+separates acceptance, background work, and live updates.
+
+00:00:16.108 --> 00:00:23.855
+Choose a delay and a reproducible seed. The request returns
+accepted promptly. A separate Python worker waits locally, while
+
+00:00:23.855 --> 00:00:26.041
+the saved ledger remains available.
+
+00:00:30.642 --> 00:00:38.664
+This pull really waits thirty two seconds. The acceptance request
+has already ended. During the wait, the ledger stays usable. The
+
+00:00:38.664 --> 00:00:46.687
+worker commits all records and its completion event atomically. A
+blocking pipe wakes one ordered event dispatcher. WebSocket then
+
+00:00:46.687 --> 00:00:54.586
+updates both tabs without polling. Moving a remote HTTP request
+into a worker would not bypass an upstream network timeout; this
+
+00:00:54.586 --> 00:00:56.561
+mock processing happens locally.
+
+00:01:04.208 --> 00:01:11.930
+Repeating the same seed skips duplicates. Search and pagination
+stay in place during automatic updates. Durable events replay
+
+00:01:11.930 --> 00:01:16.439
+after a disconnection, and database transactions prevent partial
+batches.
+
+00:01:21.117 --> 00:01:28.570
+The code separates API orchestration, the worker, the seeded
+provider, and SQLite transactions. Reproducible tests cover
+
+00:01:28.570 --> 00:01:36.830
+timeouts, concurrent requests, failure rollback, ordered delivery,
+and restart recovery. The nine hundred second setting is validated
+
+00:01:36.830 --> 00:01:41.115
+separately; this recording does not claim a full fifteen minute
+wait.

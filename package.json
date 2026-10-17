@@ -3,6 +3,6 @@
   "version": "1.0.0",
   "private": true,
   "description": "Optional browser acceptance checks; the application itself needs no Node runtime or build step.",
-  "scripts": {"test:e2e": "node tests/browser.cjs"},
+  "scripts": {"test:e2e": "node tests/run-browser.cjs"},
   "devDependencies": {"playwright": "1.62.1"}
 }

@@ -1,0 +1,118 @@
+{
+  "status": "passed",
+  "jobId": "3759e951-3867-437f-9e40-25c115b5494d",
+  "acceptanceSeconds": 0.5693932999999998,
+  "configuredDelaySeconds": 32,
+  "workerWallSeconds": 32.197,
+  "tabs": [
+    {
+      "jobId": "3759e951-3867-437f-9e40-25c115b5494d",
+      "receivedAt": 51333.699999999255,
+      "eventId": 9,
+      "renderedAt": 51424.89999999944,
+      "receiveToRenderMs": 91.20000000018626
+    },
+    {
+      "jobId": "3759e951-3867-437f-9e40-25c115b5494d",
+      "receivedAt": 27199.599999999627,
+      "eventId": 9,
+      "renderedAt": 27398.5,
+      "receiveToRenderMs": 198.90000000037253
+    }
+  ],
+  "browserClock": "performance.now per document; only same-document durations are subtracted",
+  "serverTrace": [
+    {
+      "stage": "http.accepted",
+      "job_id": "3759e951-3867-437f-9e40-25c115b5494d",
+      "monotonic": 4708.1484502,
+      "utc": "2026-10-17T11:07:11.072400+00:00",
+      "pid": 2188,
+      "delay_seconds": 32
+    },
+    {
+      "stage": "worker.started",
+      "job_id": "3759e951-3867-437f-9e40-25c115b5494d",
+      "monotonic": 4708.1628059,
+      "utc": "2026-10-17T11:07:11.086758+00:00",
+      "pid": 28824
+    },
+    {
+      "stage": "websocket.notified",
+      "job_id": "3759e951-3867-437f-9e40-25c115b5494d",
+      "monotonic": 4708.1735883,
+      "utc": "2026-10-17T11:07:11.097530+00:00",
+      "pid": 2188,
+      "event_id": 7,
+      "type": "pull.queued",
+      "client_id": "2803279535376"
+    },
+    {
+      "stage": "websocket.notified",
+      "job_id": "3759e951-3867-437f-9e40-25c115b5494d",
+      "monotonic": 4708.1753402,
+      "utc": "2026-10-17T11:07:11.099285+00:00",
+      "pid": 2188,
+      "event_id": 7,
+      "type": "pull.queued",
+      "client_id": "2803280167296"
+    },
+    {
+      "stage": "websocket.notified",
+      "job_id": "3759e951-3867-437f-9e40-25c115b5494d",
+      "monotonic": 4708.2328209,
+      "utc": "2026-10-17T11:07:11.156761+00:00",
+      "pid": 2188,
+      "event_id": 8,
+      "type": "pull.started",
+      "client_id": "2803279535376"
+    },
+    {
+      "stage": "websocket.notified",
+      "job_id": "3759e951-3867-437f-9e40-25c115b5494d",
+      "monotonic": 4708.2343984,
+      "utc": "2026-10-17T11:07:11.158339+00:00",
+      "pid": 2188,
+      "event_id": 8,
+      "type": "pull.started",
+      "client_id": "2803280167296"
+    },
+    {
+      "stage": "worker.finished",
+      "job_id": "3759e951-3867-437f-9e40-25c115b5494d",
+      "monotonic": 4740.3613754,
+      "utc": "2026-10-17T11:07:43.285315+00:00",
+      "pid": 28824,
+      "event_id": 9,
+      "inserted_count": 3000
+    },
+    {
+      "stage": "database.committed",
+      "job_id": "3759e951-3867-437f-9e40-25c115b5494d",
+      "monotonic": 4740.4216543,
+      "utc": "2026-10-17T11:07:43.345608+00:00",
+      "pid": 28824,
+      "event_id": 9
+    },
+    {
+      "stage": "websocket.notified",
+      "job_id": "3759e951-3867-437f-9e40-25c115b5494d",
+      "monotonic": 4740.440765,
+      "utc": "2026-10-17T11:07:43.364705+00:00",
+      "pid": 2188,
+      "event_id": 9,
+      "type": "pull.completed",
+      "client_id": "2803279535376"
+    },
+    {
+      "stage": "websocket.notified",
+      "job_id": "3759e951-3867-437f-9e40-25c115b5494d",
+      "monotonic": 4740.4420044,
+      "utc": "2026-10-17T11:07:43.365943+00:00",
+      "pid": 2188,
+      "event_id": 9,
+      "type": "pull.completed",
+      "client_id": "2803280412752"
+    }
+  ]
+}

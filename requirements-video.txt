@@ -1,0 +1,2 @@
+# Optional local video packaging only; not needed to run the application or tests.
+imageio-ffmpeg==0.6.0

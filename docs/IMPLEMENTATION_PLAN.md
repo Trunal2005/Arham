@@ -45,3 +45,17 @@ This was a new empty repository. There was no pre-existing implementation or mas
 ## Scope decisions
 
 The mock uses an asynchronous exchange protocol because the stated HTTP cutoff makes synchronous 15-minute responses impossible. SQLite and a supervised local worker replace hosted infrastructure. Seed data intentionally has reproducible mock execution timestamps. One API process owns one worker; high availability, real exchange integration, public hosting, and authentication are outside this assessment implementation. No paid endpoint or real BSE credential is used.
+
+## Readiness audit follow-up
+
+- [x] Correct committed-job status after a broken completion pipe.
+- [x] Decouple HTTP acceptance from slow subscribers and order all event producers through one signalled dispatcher.
+- [x] Read ledger, summary and job state in a single snapshot; enforce one database owner.
+- [x] Add distinct literal mock-provider endpoint and document real upstream timeout assumptions.
+- [x] Add visible elapsed time/job ID, presets, simulated-date label and ledger accessibility/readability improvements.
+- [x] Preserve filters/page/scroll and reconcile replay without historical toasts.
+- [x] Add true concurrency, slow-subscriber, failed-batch preservation and future-cursor regressions.
+- [x] Run 22 backend tests, 16 browser checks and save monotonic timing evidence.
+- [x] Prepare a separate machine-narrated/captioned video and a precise personal recording guide.
+
+See AUDIT.md for prioritized reasons, COMPLIANCE.md for exact requirement statuses, and VERIFICATION.md for actual results and remaining boundaries.

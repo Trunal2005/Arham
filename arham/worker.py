@@ -5,6 +5,7 @@ import time
 
 from arham.db import connect, event, get_job, now
 from arham.provider import generate_trades
+from arham.telemetry import trace
 
 
 def notify(event_id):
@@ -16,6 +17,7 @@ def execute(path, job_id):
     if not job or job["status"] != "queued":
         return
     with connect(path) as db:
+        trace("worker.started", job_id)
         db.execute("UPDATE jobs SET status='running',started_at=? WHERE id=?", (now(), job_id))
         started = event(db, "pull.started", {"job_id": job_id})
     notify(started)
@@ -31,13 +33,17 @@ def execute(path, job_id):
             inserted = db.total_changes - before
             db.execute("UPDATE jobs SET status='completed',finished_at=?,inserted_count=? WHERE id=?", (now(), inserted, job_id))
             completed = event(db, "pull.completed", {"job_id": job_id, "inserted_count": inserted})
+            trace("worker.finished", job_id, event_id=completed, inserted_count=inserted)
         # Commit precedes notification: the dashboard can immediately read the rows.
-        notify(completed)
+        trace("database.committed", job_id, event_id=completed)
     except Exception as exc:
         with connect(path) as db:
             db.execute("UPDATE jobs SET status='failed',finished_at=?,error=? WHERE id=?", (now(), str(exc), job_id))
             failed = event(db, "pull.failed", {"job_id": job_id, "error": "Ingestion failed; see job details."})
         notify(failed)
+        return
+    # A broken notification pipe must not change an already committed job to failed.
+    notify(completed)
 
 
 def main():

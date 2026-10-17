@@ -1,0 +1,41 @@
+{
+  "source_recording_seconds": 73.4,
+  "intro_seconds": 11.919229024943311,
+  "outro_seconds": 17.79592877482993,
+  "narration": "Local Windows System.Speech synthetic voice; not a human recording",
+  "segments": [
+    {
+      "start": 0,
+      "end": 10.919229024943311,
+      "text": "The exchange may take fifteen minutes, but ordinary HTTP connections end after thirty seconds. This local dashboard separates acceptance, background work, and live updates.",
+      "title": "The problem"
+    },
+    {
+      "start": 16.10846932494331,
+      "end": 26.041303792063495,
+      "text": "Choose a delay and a reproducible seed. The request returns accepted promptly. A separate Python worker waits locally, while the saved ledger remains available.",
+      "title": "Short request, separate worker"
+    },
+    {
+      "start": 30.64150112494331,
+      "end": 56.560775501360546,
+      "text": "This pull really waits thirty two seconds. The acceptance request has already ended. During the wait, the ledger stays usable. The worker commits all records and its completion event atomically. A blocking pipe wakes one ordered event dispatcher. WebSocket then updates both tabs without polling. Moving a remote HTTP request into a worker would not bypass an upstream network timeout; this mock processing happens locally.",
+      "title": "The real 32-second test"
+    },
+    {
+      "start": 64.2083268249433,
+      "end": 76.4390297727891,
+      "text": "Repeating the same seed skips duplicates. Search and pagination stay in place during automatic updates. Durable events replay after a disconnection, and database transactions prevent partial batches.",
+      "title": "Idempotence and recovery"
+    },
+    {
+      "start": 81.1174707249433,
+      "end": 101.11515779977324,
+      "text": "The code separates API orchestration, the worker, the seeded provider, and SQLite transactions. Reproducible tests cover timeouts, concurrent requests, failure rollback, ordered delivery, and restart recovery. The nine hundred second setting is validated separately; this recording does not claim a full fifteen minute wait.",
+      "title": "Engineering evidence"
+    }
+  ],
+  "total_seconds": 103.11515779977324,
+  "status": "decoded successfully; presentation should be personally reviewed before submission",
+  "captions": "Approximate phrase timing from synthesized segment duration; at most two lines per cue"
+}

@@ -15,6 +15,7 @@ class RunningServer:
     def __init__(self, database, log_path):
         self.database = database
         self.log_path = log_path
+        self.trace_path = log_path.with_suffix('.trace.jsonl')
         self.process = None
         self.log = None
         with socket.socket() as sock:
@@ -26,7 +27,7 @@ class RunningServer:
 
     def start(self):
         self.log = open(self.log_path, 'a', encoding='utf-8')
-        env = {**os.environ, 'ARHAM_DB': str(self.database)}
+        env = {**os.environ, 'ARHAM_DB': str(self.database), 'ARHAM_TRACE': str(self.trace_path)}
         self.process = subprocess.Popen(
             [sys.executable, '-m', 'uvicorn', 'arham.app:app', '--host', '127.0.0.1', '--port', str(self.port)],
             cwd=ROOT, env=env, stdout=self.log, stderr=subprocess.STDOUT,

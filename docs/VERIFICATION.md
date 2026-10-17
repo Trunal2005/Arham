@@ -1,59 +1,83 @@
 # Verification record
 
-Verified locally on **17 October 2026 (IST)** with Python 3.13, a clean project virtual environment, SQLite, FastAPI/Uvicorn, and Chrome driven by Playwright. No external exchange, cloud service, or paid account was involved.
+Audit verified locally on **17 October 2026 (IST)**. This is engineering evidence, not an official company evaluation. No paid account, real exchange, or hosted service was used.
 
-## Backend: 12 passed
+## Actual runs
 
-Command:
+| Run | Result |
+|---|---|
+| Unchanged baseline `4a0742f` | 12 passed in 56.25 seconds |
+| Audit fast suite | 20 passed, 2 slow tests deselected in 45.48 seconds |
+| First full audit run | 21 passed, 1 failed: a measurement included HTTP-client construction; see AUDIT.md |
+| Corrected measurement regression | 1 passed, 21 deselected in 34.73 seconds; original one-second assertion retained |
+| Final full backend suite | **22 passed in 115.37 seconds**, no failures or skipped tests |
+| Expanded Chrome browser run | **16 acceptance checks passed**, no uncaught browser exceptions, failed HTTP responses, or external resource requests |
+
+Commands:
 
 ```powershell
-.\.venv\Scripts\python.exe -m pytest -q --junitxml=test-results/backend.xml
+.\.venv\Scripts\python.exe -m pytest -q --junitxml=test-results/backend-audit.xml
+npm run test:e2e
 ```
 
-Final full run: **12 passed in 62.47 seconds**, zero skipped tests or failures. The retained [JUnit report](evidence/backend-results.xml) contains individual timings.
+[Final JUnit](evidence/backend-results.xml) and [browser results](evidence/browser-results.json) retain measured results. The browser runner owns a fresh isolated database/server, including worker-crash and backend-restart control. Tests probe server readiness and sample reads; those test harness actions are not application polling.
 
-| Verified behavior | Evidence |
-|---|---|
-| Background ingestion and WebSocket fanout | A real API process starts a real worker; two real WebSocket subscribers receive the same completion ID. Exactly 3,000 records become queryable after the event. |
-| Fast accepted requests and cached reads | Tests assert accepted requests under 1–2 seconds and cached reads under one second while ingestion is active. These are local-test thresholds, not a production performance guarantee. |
-| Event ordering | Live events are queued → started → completed, with increasing IDs. |
-| Duplicate protection | Repeating the same 3,000-record seed inserts zero; a different seed adds 3,000. |
-| Named mock route | `/getTrades` returns a fast 202 and a result URL; after the completion event its result returns 2,500 seeded trade records with 200. |
-| Search and pagination | Non-overlapping pages; case-insensitive symbol, client, and trade ID searches; SQL-like strings treated literally. |
-| Validation | Invalid delay/count/seed and pagination rejected; unknown jobs return 404. |
-| WebSocket reconnect | A cursor before completion replays it; an up-to-date cursor receives connected without duplicate history. |
-| Server interruption recovery | Terminate the test process tree mid-pull; restart with the same DB; old data persists and queued/running work completes once. |
-| Mid-batch database failure | An injected SQLite trigger aborts record 15. No partial rows remain; a failed event is delivered; after removing the cause a retry succeeds. |
-| Worker crash | Terminate only the test worker; a failure event arrives, health becomes 503, and a new explicit pull starts a replacement worker and succeeds. |
-| 15-minute configuration | A 900-second mock job is accepted in under one second; committed reads stay available. The test then shuts down its isolated server. |
-| Actual delay beyond HTTP cutoff | A real 32-second pull returns 202 immediately. At 30.5 seconds, a short ledger read still succeeds. Completion arrives through WebSocket after 32 seconds with 3,000 rows. |
-| Money and deterministic data | Repeated generation produces identical unique IDs and data; integer paise aggregates match the sum across all persisted rows. |
-| Concurrent pull guard | Both API behavior and the database's partial unique index reject another active job. |
+## Measured 32-second flow
 
-## Browser: 10 acceptance checks passed
+The final [backend timing report](evidence/timeout-backend.json) records a distinct initiating HTTP client closing immediately after acceptance, with 100 existing trades available throughout the new 3,000-row pull.
 
-The [machine-readable browser report](evidence/browser-results.json) records browser version, completion timestamp, and the ten checks. The runner is `tests/browser.cjs`, executed against an isolated empty database.
+| Measurement | Actual observation |
+|---|---:|
+| GET acceptance, excluding client-object construction | 17.90 ms |
+| Worker start to finished transactional work | 32.100105 s |
+| Initiation to both subscribers receiving completion | 32.178042 s |
+| Observed commit completion to first subscriber receipt | 14.26 ms |
+| Observed commit completion to second subscriber receipt | 15.40 ms |
+| Cached reads around 0 / 10 / 20 / 30.5 seconds | 66.13 / 15.30 / 15.26 / 31.53 ms |
+| Persisted count after completion | 3,100 (100 saved + 3,000 new) |
 
-1. Correct empty dashboard with live connection.
-2. No HTTP requests while idle (2.5-second observation).
-3. Visible configurable background pull and in-progress state.
-4. Two already open tabs update to 3,000 trades without reloading.
-5. Symbol search displays only matching trades.
-6. Next-page action changes the displayed trade IDs.
-7. A populated ledger remains usable during a second pull, then updates to 6,000 records.
-8. An offline browser with its WebSocket explicitly closed reconnects and reconciles a missed pull to 6,100 records.
-9. At a 390-pixel mobile viewport, the page has no horizontal document overflow; wide ledger columns scroll inside the table.
-10. No uncaught browser exceptions or failed HTTP responses; the populated idle dashboard also makes no polling requests.
+The trace includes API accepted, worker started, worker finished, commit completion observed, and successful WebSocket send milestones. Server/test elapsed times use the same OS `time.monotonic()` domain. UTC stamps are contextual, not the elapsed-time calculation. A commit stamp is observed after the commit and connection close; a send stamp means the transport accepted a frame, not a browser acknowledgment.
 
-Screenshots and a real browser recording are under [evidence](evidence/). The final desktop ledger is a bounded scrolling table with a sticky header, rather than a 50-row page extending far below the activity panels.
+The independent [browser timing report](evidence/timeout-browser.json) records a 32-second job with two actual tabs. Acceptance including click automation took **569 ms**; job wall duration was **32.197 seconds**. Receipt-to-render checkpoints were **91.2 ms** and **198.9 ms** in their respective document `performance.now()` domains. No browser clock is subtracted from a server clock. A DOM checkpoint is emitted on an animation frame after applying the returned snapshot; it is not a claim to measure a monitor's physical display latency.
 
-Additional checks: JavaScript syntax, Python compilation, `pip check`, and Git whitespace validation pass. The browser assets have no external resource requests or paid dependencies.
+These are observations on this local machine, not production latency guarantees. [After-30-second screenshot](evidence/timeout-running-after-30s.png) and [completed screenshot](evidence/timeout-completed.png) accompany behavioral assertions. Search and page 2 remain selected while cached records are displayed.
 
-## What was not verified or delivered
+## Backend coverage
 
-- A full 900-second elapsed wait was not performed. The upper bound is validated and accepted; real end-to-end elapsed waiting was verified at 32 seconds. A live 15-minute demonstration is available by setting the delay to 900.
-- No real BSE integration, external network appliance, production proxy, authentication system, multi-host deployment, or load benchmark was tested.
-- The video is a real UI recording without narration. The accompanying walkthrough document provides a presentation script.
-- The Git repository is local. No GitHub publication or email submission was performed.
+The 22 tests exercise real API and worker processes, real WebSocket clients, and isolated SQLite databases. They verify:
 
-The asynchronous mock exchange accept/result protocol is a documented design choice necessitated by the stated HTTP lifetime limit; it does not emulate a synchronous connection that stays open for 15 minutes.
+- Empty state, seeded data, positive integer quantities/prices, UTC timestamps and deterministic IDs.
+- Two subscribers, ordered queued/started/completed IDs, completion after committed writes, immediate cached reads.
+- Idempotent duplicate counts, new datasets, search, stable pagination, validation and missing resources.
+- Ten concurrent real HTTP requests: exactly one accepted and nine conflicts referencing that job.
+- A deliberately slow subscriber cannot hold up HTTP acceptance.
+- A broken post-commit IPC notification does not turn a committed job into a failure.
+- Read snapshots remain consistent across concurrent commits; dashboard aggregates match independently accumulated raw rows.
+- Database-trigger failure rolls back a partial batch and preserves earlier committed trades.
+- Process-tree termination and restart recover an interrupted job; worker-only failure is visible and an explicit retry starts a replacement.
+- OS ownership rejects a second API before it can disturb the first worker.
+- Reconnect replay, current/future cursors, duplicate handling, and direct mock-provider consistency.
+- The original real 32-second test plus a measured closed-client/32-second/cached-read/two-subscriber test.
+- A configured 900-second job returns 202 promptly. **The suite does not wait 900 seconds and does not claim elapsed 15-minute completion.**
+
+## Browser coverage
+
+The [16 recorded checks](evidence/browser-results.json) cover fresh loading; no idle polling; 5/32/900 delay presets; initial modal focus; native validation; Escape and focus restoration; double-submit prevention; two-tab automatic updates; search and pagination; saved records and filter/page preservation during ingestion; exact INR totals; reload while working; the real timed 32-second job; duplicate counts and duplicate-event suppression; disconnect/replay; 390px and 1024px layouts; worker failure/retry; backend restart; and persisted state on page reload. Related assertions are grouped into 16 checks, rather than represented as separate test-runner cases.
+
+All tested dashboard resources are local. Non-origin requests were blocked and asserted absent, demonstrating operation without an internet-backed frontend dependency. The optional Swagger UI still uses default CDN assets; the dashboard, JSON API and `/openapi.json` do not.
+
+## Financial verification
+
+The original demo database contains seeds 42 and 43, 6,000 unique trade IDs, total quantity **3,032,820**, and **80** unique clients. Independent Python integer accumulation from raw persisted rows matches the SQL aggregates at **624,969,894,595 paise** = **₹6,249,698,945.95** = **₹624.969894595 crore**, correctly displayed as **₹624.97Cr**. This value is not inferred from a screenshot. [Financial evidence](evidence/financial-summary.json) retains the calculation.
+
+The dataset's execution date is intentionally simulated (1 January 2026), explicitly labeled in the ledger. Pull creation/completion timestamps are actual UTC values displayed in IST. All monetary aggregation uses integer paise; the UI converts only for formatting.
+
+## Media and static checks
+
+The new raw browser recording is **73.40 seconds**. A separate **103.12-second** MP4 combines this verified recording with architecture/module cards, locally synthesized narration, and sidecar captions. The synthetic voice is disclosed. Intro/outro and running/completed/mobile/tablet screenshots were visually checked; the MP4 decoded successfully with a non-silent AAC audio track (mean −21.8 dB, peak −0.2 dB). This is not a claim of human narration or company submission.
+
+JavaScript syntax checks, Python compilation/tab checks, `pip check`, Git whitespace checks, tracked-file hygiene, and local documentation links are checked separately. There is no configured formatter/linter whose successful execution is being claimed.
+
+## Boundaries
+
+No real BSE API, production network appliance, multi-host deployment, public authentication or load benchmark was tested. The literal direct provider can be subject to the stated network timeout; moving the same request into a worker would not bypass that timeout. See ARCHITECTURE.md. The local Git repository and presentation artifacts are prepared for review. Nothing was pushed, published or emailed.

@@ -2,3 +2,24 @@
 .table-wrap{max-height:520px}
 thead{position:sticky;top:0;z-index:1}
 @media(max-width:720px){.table-wrap{max-height:420px}}
+/* Readability and keyboard access retain the original navy/green identity. */
+td{font-size:12px;color:#526079;padding:14px 16px}
+td:first-child{font-size:10px;color:#5f6e83}
+th{font-size:11px;color:#59697f}
+.date-time{font-size:11px;color:#5f6e83}
+.symbol-tag{font-size:10px}
+tbody tr:hover,tbody tr:focus-within{background:#eaf4f0}
+.table-wrap{overscroll-behavior:contain;scrollbar-gutter:stable}
+:focus-visible{outline:2px solid #168363;outline-offset:3px}
+.page-button{min-width:34px;min-height:34px}
+.table-footer,.page-size,.search input{font-size:11px;color:#59697f}
+.panel-heading p,.heading p,.metric small,.status-line,.muted{color:#647389}
+.activity-body p,.activity-body small,.symbol-label>span:last-child{color:#647389}
+.pull-banner p{color:#466d5b;font-size:11px}
+.job-meta{overflow-wrap:anywhere;font-family:ui-monospace,monospace;font-size:10px!important}
+.delay-presets{display:flex;flex-wrap:wrap;gap:6px}
+.delay-presets button{background:#f0f6f3;border:1px solid #cfdfd7;border-radius:5px;padding:8px;font-size:11px;color:#315f4c}
+.delay-presets button:hover{background:#dfeee7}
+dialog small,.form-note,dialog p{color:#647389}
+.trade-loading{opacity:.7}
+@media(max-width:720px){.table-footer{font-size:10px;gap:6px;flex-wrap:wrap}.table-footer>div{margin-left:auto}.panel-heading p{line-height:1.7}.job-meta{font-size:9px!important}}
