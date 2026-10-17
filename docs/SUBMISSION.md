@@ -9,6 +9,7 @@ Prepared on 17 October 2026 for the Arham Fintech Software Engineer assessment. 
 | Backend integration suite | 22 passed in 128.24 seconds; two real 32-second tests. |
 | Full browser acceptance suite | 16 checks passed; 202 accepted in 0.344 seconds, worker duration 32.499 seconds, both tabs updated automatically. |
 | Dependency consistency | `python -m pip check`: no broken requirements. |
+| Clean checkout / fresh environment | Dependencies installed from locally cached wheels using requirements-dev.txt; API/worker/WebSocket and mock-contract smoke tests: 2 passed in 7.89 seconds. |
 | Syntax | Python compilation and JavaScript syntax checks passed. |
 | Historical credential/path scan | 136 Git blobs scanned; no matching private-key, GitHub/AWS/API-token, or personal Windows home-path patterns. |
 | Tracked generated/private files | No virtual environment, node_modules, local database, `.env`, or cache directories tracked. Ignore rules tested with representative paths. |
@@ -30,4 +31,8 @@ The original clip uses the earlier visual styling; the supplement uses the curre
 
 Target: [Trunal2005/Arham](https://github.com/Trunal2005/Arham), branch `main`. README links use repository-relative paths so they work on GitHub. Local databases, secrets, environments, caches, and temporary test outputs are excluded. Pattern-based scanning provides evidence, not a guarantee against every possible kind of secret.
 
-The final GitHub commit, remote file comparison, rendered README/diagram, video accessibility, and clean working tree are checked after publication and reported in the handoff. No assessment email is sent by these scripts or this preparation task. Before sending, personally review the narration and include the repository/video links and any attachments requested by the assessment email.
+Publication succeeded without force-pushing. GitHub's default branch is `main` and the repository is public and no longer empty. All 113 files in the initial submission commit matched their local Git blob hashes, including the MP4. The later publication-verification commit only updates documentation/evidence.
+
+Real Chrome checks confirmed the README renders with its dashboard image, GitHub renders the Mermaid SVG with all five architecture components, and the GitHub-hosted MP4 plays with decoded audio at its full 118.60-second duration. See [publication evidence](evidence/submission/github-verification.json). The final commit hash and clean working tree are confirmed in the handoff.
+
+No assessment email has been sent. Before sending, personally review the narration and include the repository/video links and any attachments requested by the assessment email.

@@ -1,0 +1,27 @@
+{
+  "repository": "https://github.com/Trunal2005/Arham",
+  "branch": "main",
+  "verified_source_commit": "58addb6f804ef4ff88612ee1d0d5a3d1e2858e64",
+  "published_files_compared": 113,
+  "all_git_blob_hashes_match": true,
+  "unwanted_files": [],
+  "readme": "Rendered in real Chrome; dashboard image loaded",
+  "mermaid": "GitHub Mermaid iframe contains rendered SVG and all five architecture components",
+  "video": {
+    "url": "https://raw.githubusercontent.com/Trunal2005/Arham/main/docs/evidence/submission-walkthrough.mp4",
+    "duration": 118.6,
+    "currentTime": 1.067331,
+    "width": 1440,
+    "height": 1000,
+    "audioDecodedBytes": 19086,
+    "error": null,
+    "status": "passed"
+  },
+  "clean_checkout": {
+    "fresh_environment": true,
+    "dependencies": "requirements-dev.txt installed from cached wheels",
+    "smoke_tests_passed": 2,
+    "seconds": 7.89
+  },
+  "email_sent": false
+}

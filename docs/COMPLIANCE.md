@@ -26,10 +26,11 @@ Statuses use **Verified**, **Implemented but not verified**, **Not implemented**
 | Mobile and tablet layout | Verified | Real 390px/1024px browser overflow checks and screenshots |
 | Local offline operation without paid services/keys | Verified | No non-origin dashboard requests; local SQLite/worker/provider; free dependencies |
 | One complete local Git repository and setup README | Verified | Sources, tests, evidence and commands; clean-clone result is recorded in VERIFICATION.md |
-| Architecture note and diagram | Verified | ARCHITECTURE.md includes flow/sequence diagrams and upstream timeout analysis |
+| Architecture note and diagram | Verified | Concise ARCHITECTURE.md includes a GitHub-rendered Mermaid flow diagram and upstream timeout analysis |
 | Video walkthrough prepared | Verified | Raw behavioral recording plus disclosed machine-narrated MP4, captions and recording guide |
 | Human-presented personal walkthrough | Not implemented | Machine narration is supplied; exact personal recording steps are in WALKTHROUGH.md |
-| GitHub publication / company submission | Not implemented | Explicitly excluded by the audit request; no push, publication or email |
+| GitHub publication | Verified | Published to [Trunal2005/Arham](https://github.com/Trunal2005/Arham) on main; source hashes, rendered README/Mermaid and remote video playback checked. See SUBMISSION.md. |
+| Assessment email | Pending user action | No email has been sent. |
 | Real BSE production integration / multi-host service | Not applicable | Assessment requests a local mock; production boundaries documented |
 
 No remaining locally reproduced critical defect is known after the audit fixes. That is bounded by the tests and environment above; it is not a guarantee of selection or production readiness. See AUDIT.md for original findings, VERIFICATION.md for measured results, and WALKTHROUGH.md for delivery steps.

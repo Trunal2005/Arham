@@ -1,5 +1,7 @@
 # Final engineering readiness report
 
+This report records the earlier local engineering audit. For the later GitHub publication, final test rerun, and updated video evidence, see [submission verification](SUBMISSION.md).
+
 Completed 17 October 2026. The project was improved in place; Python/FastAPI, SQLite, the separate worker, native frontend, and WebSockets were retained. No framework migration or paid service was introduced.
 
 ## 1. Problems discovered
